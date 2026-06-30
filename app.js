@@ -19,18 +19,26 @@ app.use(morgan("dev"));
 /* =========================================================
    BODY PARSING (SAFE FOR MULTER)
 ========================================================= */
+/* =========================================================
+   BODY PARSING (SAFE FOR MULTER + STRIPE WEBHOOK)
+========================================================= */
 app.use((req, res, next) => {
   const contentType = req.headers["content-type"] || "";
 
-  // IMPORTANT: skip multer routes
-  if (contentType.includes("multipart/form-data")) {
+  const rawBodyRoutes = [
+    "/api/payments/stripe/webhook",
+    "/api/payments/cashapp/webhook",
+  ];
+
+  if (
+    contentType.includes("multipart/form-data") ||
+    rawBodyRoutes.includes(req.originalUrl)
+  ) {
     return next();
   }
 
   express.json({ limit: "50mb" })(req, res, next);
 });
-
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 /* =========================================================
    HEALTH CHECK
