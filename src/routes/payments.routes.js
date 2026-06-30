@@ -96,4 +96,19 @@ router.get("/wallet/ledger", requireAuth, ledger);
 // ================= WITHDRAWALS =================
 router.post("/withdrawals", requireAuth, requestWithdrawal);
 
+
+
+console.log("=================================");
+console.log("PAYMENT ROUTES");
+console.log("=================================");
+
+router.stack.forEach((layer) => {
+  if (layer.route) {
+    const method = Object.keys(layer.route.methods)[0].toUpperCase();
+    console.log(`${method} ${layer.route.path}`);
+  }
+});
+
+console.log("=================================");
+
 module.exports = router;

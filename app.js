@@ -121,6 +121,21 @@ safeUse("/api/chats", chatRoutes);
 safeUse("/api/calls", callRoutes);
 
 safeUse("/api/gifts", giftRoutes);
+
+console.log("=================================");
+console.log("PAYMENT ROUTER STACK");
+console.log("=================================");
+
+paymentRoutes.stack.forEach((layer) => {
+  if (layer.route) {
+    console.log(
+      `${Object.keys(layer.route.methods)[0].toUpperCase()} ${layer.route.path}`
+    );
+  }
+});
+
+console.log("=================================");
+
 safeUse("/api/payments", paymentRoutes);
 
 safeUse("/api/stories", storyRoutes);
